@@ -4,6 +4,7 @@ package com.scc.zuulsvr;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.sleuth.Sampler;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @SpringBootApplication
 @EnableZuulProxy
+@RefreshScope
 public class ZuulServerApplication {
 
     @Bean
