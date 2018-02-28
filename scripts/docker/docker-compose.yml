@@ -1,0 +1,13 @@
+zuulserver:
+    image:   anthonydenecheau/scc-zuulsvr:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "5555:5555"
+    links:
+      - "eurekaserver:eurekaserver"
+      - "configserver:configserver"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "5555"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"

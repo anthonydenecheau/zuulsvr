@@ -1,6 +1,5 @@
 package com.scc.zuulsvr;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -16,34 +15,32 @@ import com.scc.zuulsvr.utils.UserContextInterceptor;
 import java.util.Collections;
 import java.util.List;
 
-
 @SpringBootApplication
 @EnableZuulProxy
 @RefreshScope
 public class ZuulServerApplication {
 
-    @Bean
-    public Sampler defaultSampler() {
-        return new AlwaysSampler();
-    }
+	@Bean
+	public Sampler defaultSampler() {
+		return new AlwaysSampler();
+	}
 
-    @LoadBalanced
-    @Bean
-    public RestTemplate getRestTemplate(){
-        RestTemplate template = new RestTemplate();
-        List interceptors = template.getInterceptors();
-        if (interceptors == null) {
-            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
-        } else {
-            interceptors.add(new UserContextInterceptor());
-            template.setInterceptors(interceptors);
-        }
+	@LoadBalanced
+	@Bean
+	public RestTemplate getRestTemplate() {
+		RestTemplate template = new RestTemplate();
+		List interceptors = template.getInterceptors();
+		if (interceptors == null) {
+			template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
+		} else {
+			interceptors.add(new UserContextInterceptor());
+			template.setInterceptors(interceptors);
+		}
 
-        return template;
-    }
+		return template;
+	}
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZuulServerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ZuulServerApplication.class, args);
+	}
 }
-

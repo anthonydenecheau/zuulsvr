@@ -1,3 +1,7 @@
+#Default port is 5555
+server:
+  port: 5555
+  
 spring:
   zipkin:
     baseUrl:  http://localhost:9411

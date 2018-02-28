@@ -8,47 +8,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TrackingFilter extends ZuulFilter{
-    private static final int      FILTER_ORDER =  1;
-    private static final boolean  SHOULD_FILTER=true;
-    private static final Logger logger = LoggerFactory.getLogger(TrackingFilter.class);
+public class TrackingFilter extends ZuulFilter {
+	private static final int FILTER_ORDER = 1;
+	private static final boolean SHOULD_FILTER = true;
+	private static final Logger logger = LoggerFactory.getLogger(TrackingFilter.class);
 
-    @Autowired
-    FilterUtils filterUtils;
+	@Autowired
+	FilterUtils filterUtils;
 
-    @Override
-    public String filterType() {
-        return FilterUtils.PRE_FILTER_TYPE;
-    }
+	@Override
+	public String filterType() {
+		return FilterUtils.PRE_FILTER_TYPE;
+	}
 
-    @Override
-    public int filterOrder() {
-        return FILTER_ORDER;
-    }
+	@Override
+	public int filterOrder() {
+		return FILTER_ORDER;
+	}
 
-    public boolean shouldFilter() {
-        return SHOULD_FILTER;
-    }
+	public boolean shouldFilter() {
+		return SHOULD_FILTER;
+	}
 
-    private boolean isAuthentificationKeyIsPresent() {
-        if (filterUtils.getAuthentificationKey() !=null){
-            return true;
-        }
+	private boolean isAuthentificationKeyIsPresent() {
+		if (filterUtils.getAuthentificationKey() != null) {
+			return true;
+		}
 
-        return false;
-    }
-    
-    public Object run() {
+		return false;
+	}
 
-        if (isAuthentificationKeyIsPresent()) {
-            logger.debug("authentification key found in tracking filter: {}. ", filterUtils.getAuthentificationKey());
-         }
-         else{
-             logger.debug("authentification key not found: Non Authorized.");
-        }
-        
-        RequestContext ctx = RequestContext.getCurrentContext();
-        logger.debug("Processing incoming request for {}.",  ctx.getRequest().getRequestURI());
-        return null;
-    }
+	public Object run() {
+
+		if (isAuthentificationKeyIsPresent()) {
+			logger.debug("authentification key found in tracking filter: {}. ", filterUtils.getAuthentificationKey());
+		} else {
+			logger.debug("authentification key not found: Non Authorized.");
+		}
+
+		RequestContext ctx = RequestContext.getCurrentContext();
+		logger.debug("Processing incoming request for {}.", ctx.getRequest().getRequestURI());
+		return null;
+	}
 }

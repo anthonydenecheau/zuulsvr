@@ -15,22 +15,25 @@ import java.io.IOException;
 
 @Component
 public class UserContextFilter implements Filter {
-    private static final Logger logger = LoggerFactory.getLogger(UserContextFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserContextFilter.class);
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+	@Override
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+			throws IOException, ServletException {
 
-    	HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        UserContextHolder.getContext().setAuthentificationKey( httpServletRequest.getHeader(UserContext.AUTHENTICATION_KEY) );
-        logger.debug("Incoming Authentification key: {}", UserContextHolder.getContext().getAuthentificationKey());
+		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+		UserContextHolder.getContext()
+				.setAuthentificationKey(httpServletRequest.getHeader(UserContext.AUTHENTICATION_KEY));
+		logger.debug("Incoming Authentification key: {}", UserContextHolder.getContext().getAuthentificationKey());
 
-        filterChain.doFilter(httpServletRequest, servletResponse);
-    }
+		filterChain.doFilter(httpServletRequest, servletResponse);
+	}
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
-    @Override
-    public void destroy() {}
+	@Override
+	public void destroy() {
+	}
 }

@@ -1,6 +1,5 @@
 package com.scc.zuulsvr.filters;
 
-
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
@@ -10,34 +9,34 @@ import org.springframework.stereotype.Component;
 import org.springframework.cloud.sleuth.Tracer;
 
 @Component
-public class ResponseFilter extends ZuulFilter{
-    private static final int  FILTER_ORDER=1;
-    private static final boolean  SHOULD_FILTER=true;
-    private static final Logger logger = LoggerFactory.getLogger(ResponseFilter.class);
-    
-    @Autowired
-    Tracer tracer;
+public class ResponseFilter extends ZuulFilter {
+	private static final int FILTER_ORDER = 1;
+	private static final boolean SHOULD_FILTER = true;
+	private static final Logger logger = LoggerFactory.getLogger(ResponseFilter.class);
 
-    @Override
-    public String filterType() {
-        return "post";
-    }
+	@Autowired
+	Tracer tracer;
 
-    @Override
-    public int filterOrder() {
-        return FILTER_ORDER;
-    }
+	@Override
+	public String filterType() {
+		return "post";
+	}
 
-    @Override
-    public boolean shouldFilter() {
-        return SHOULD_FILTER;
-    }
+	@Override
+	public int filterOrder() {
+		return FILTER_ORDER;
+	}
 
-    @Override
-    public Object run() {
-        RequestContext ctx = RequestContext.getCurrentContext();
-        ctx.getResponse().addHeader("tmx-correlation-id", tracer.getCurrentSpan().traceIdString());
+	@Override
+	public boolean shouldFilter() {
+		return SHOULD_FILTER;
+	}
 
-        return null;
-    }
+	@Override
+	public Object run() {
+		RequestContext ctx = RequestContext.getCurrentContext();
+		ctx.getResponse().addHeader("tmx-correlation-id", tracer.getCurrentSpan().traceIdString());
+
+		return null;
+	}
 }
