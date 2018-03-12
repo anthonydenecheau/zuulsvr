@@ -35,7 +35,7 @@ public class ResponseFilter extends ZuulFilter {
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
-		ctx.getResponse().addHeader("tmx-correlation-id", tracer.getCurrentSpan().traceIdString());
+		ctx.getResponse().addHeader("scc-correlation-id", tracer.getCurrentSpan().traceIdString());
 
 		return null;
 	}

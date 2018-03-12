@@ -22,9 +22,9 @@ public class FilterUtils {
 		}
 	}
 
-	public void setAuthentificationKey(String correlationId) {
+	public void setAuthentificationKey(String key) {
 		RequestContext ctx = RequestContext.getCurrentContext();
-		ctx.addZuulRequestHeader(AUTHENTIFICATION_KEY, correlationId);
+		ctx.addZuulRequestHeader(AUTHENTIFICATION_KEY, key);
 	}
 
 }

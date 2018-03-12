@@ -15,8 +15,12 @@ import com.scc.zuulsvr.utils.UserContextInterceptor;
 import java.util.Collections;
 import java.util.List;
 
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @SpringBootApplication
 @EnableZuulProxy
+@EnableSwagger2
 @RefreshScope
 public class ZuulServerApplication {
 
@@ -42,5 +46,11 @@ public class ZuulServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ZuulServerApplication.class, args);
+	}
+	
+	@Bean
+	UiConfiguration uiConfig() {
+		return new UiConfiguration("validatorUrl", "list", "alpha", "schema",
+				UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
 	}
 }
