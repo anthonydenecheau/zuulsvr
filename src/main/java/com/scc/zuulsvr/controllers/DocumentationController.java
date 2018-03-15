@@ -29,7 +29,12 @@ public class DocumentationController implements SwaggerResourcesProvider {
 
 		routes.forEach((k,v)-> {;
 			ZuulProperties.ZuulRoute p = (ZuulProperties.ZuulRoute) v;
-			resources.add(swaggerResource(p.getServiceId(),"/api/"+p.getId()+"/api-docs","2.0"));
+			// TODO : automate version (via config.)
+			if (p.getServiceId().equals("dogservice")) {
+				resources.add(swaggerResource(p.getServiceId()+"-v1","/api/"+p.getId()+"/api-docs?group=dogservice-1.0","2.0"));
+				resources.add(swaggerResource(p.getServiceId()+"-v2","/api/"+p.getId()+"/api-docs?group=dogservice-2.0","2.0"));
+			} else
+				resources.add(swaggerResource(p.getServiceId()+"-v1","/api/"+p.getId()+"/api-docs","2.0"));
 		});
 		
 		return resources;
