@@ -1,0 +1,19 @@
+eureka:
+  client:
+    enabled: false  
+    
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+example:
+  property: "I AM IN THE DEFAULT"
+  
+authentification:
+  max:
+    attempt: 10 # try
+  recovery:
+    attempt: 5 # min
+  

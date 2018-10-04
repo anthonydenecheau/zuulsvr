@@ -23,9 +23,9 @@ public class DocumentationController implements SwaggerResourcesProvider {
 	private ZuulProperties zuulProperties ;
 
 	@Override
-	public List get() {
-		List resources = new ArrayList();
-		Map routes= zuulProperties.getRoutes();
+	public List<SwaggerResource> get() {
+		List<SwaggerResource> resources = new ArrayList<SwaggerResource>();
+		Map<String, ZuulRoute> routes= zuulProperties.getRoutes();
 
 		routes.forEach((k,v)-> {;
 			ZuulProperties.ZuulRoute p = (ZuulProperties.ZuulRoute) v;

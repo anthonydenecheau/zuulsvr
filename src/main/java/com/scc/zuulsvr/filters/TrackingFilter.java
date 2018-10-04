@@ -2,6 +2,11 @@ package com.scc.zuulsvr.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.scc.zuulsvr.services.LoginAttemptService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,9 @@ public class TrackingFilter extends ZuulFilter {
 	@Autowired
 	FilterUtils filterUtils;
 
+	@Autowired
+    LoginAttemptService loginAttemptService;
+	
 	@Override
 	public String filterType() {
 		return FilterUtils.PRE_FILTER_TYPE;
@@ -39,15 +47,43 @@ public class TrackingFilter extends ZuulFilter {
 	}
 
 	public Object run() {
+		
+		RequestContext ctx = RequestContext.getCurrentContext();
 
+		final String ip = getClientIP(ctx.getRequest());
+		
+		// Pour la consultation de la doc Swagger, pas de blocage d'IP
+		if (ctx.getRequest().getRequestURI().indexOf("api-docs") > 0 ) {
+			logger.debug("Consultation Swagger documentation: {} [{}].", ctx.getRequest().getRequestURI(), ip);
+			return null;
+		}
+		
+        // l'IP est bloquée jusqu'à expiration du cache
+        if (loginAttemptService.isBlocked(ip)) {
+			HttpServletResponse httpServletResponse = (HttpServletResponse) ctx.getResponse();
+			httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			logger.error("Authentification, quota reached : [{}].", ip);
+			ctx.setSendZuulResponse(false);
+			return null;
+        }
+        
 		if (isAuthentificationKeyIsPresent()) {
-			logger.debug("authentification key found in tracking filter: {}. ", filterUtils.getAuthentificationKey());
+			logger.debug("Authentification key found in tracking filter: {} [{}].", filterUtils.getAuthentificationKey(), ip);
 		} else {
-			logger.debug("authentification key not found: Non Authorized.");
+			// loginFailed 
+			logger.error("Authentification key not found: Non Authorized [{}].", ip);
+			loginAttemptService.loginFailed(ip);
 		}
 
-		RequestContext ctx = RequestContext.getCurrentContext();
-		logger.debug("Processing incoming request for {}.", ctx.getRequest().getRequestURI());
+		logger.debug("Processing incoming request for {} [{}].", ctx.getRequest().getRequestURI(), ip);
 		return null;
 	}
+	
+    private final String getClientIP(HttpServletRequest request) {
+        final String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
+    }
 }

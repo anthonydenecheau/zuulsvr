@@ -2,6 +2,11 @@ package com.scc.zuulsvr.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.scc.zuulsvr.services.LoginAttemptService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +22,12 @@ public class ResponseFilter extends ZuulFilter {
 	@Autowired
 	Tracer tracer;
 
+	@Autowired
+    LoginAttemptService loginAttemptService;
+
 	@Override
 	public String filterType() {
-		return "post";
+		return FilterUtils.POST_FILTER_TYPE;
 	}
 
 	@Override
@@ -36,7 +44,20 @@ public class ResponseFilter extends ZuulFilter {
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		ctx.getResponse().addHeader("scc-correlation-id", tracer.getCurrentSpan().traceIdString());
-
+		
+		// loginFailed ! 
+		final String ip = getClientIP(ctx.getRequest());
+		if (ctx.getResponseStatusCode() == HttpServletResponse.SC_UNAUTHORIZED )
+			loginAttemptService.loginFailed(ip);
+		
 		return null;
 	}
+	
+    private final String getClientIP(HttpServletRequest request) {
+        final String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
+    }
 }

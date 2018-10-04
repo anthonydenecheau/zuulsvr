@@ -8,6 +8,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.sleuth.Sampler;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 import com.scc.zuulsvr.utils.UserContextInterceptor;
@@ -33,7 +34,7 @@ public class ZuulServerApplication {
 	@Bean
 	public RestTemplate getRestTemplate() {
 		RestTemplate template = new RestTemplate();
-		List interceptors = template.getInterceptors();
+		List<ClientHttpRequestInterceptor> interceptors = template.getInterceptors();
 		if (interceptors == null) {
 			template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
 		} else {
