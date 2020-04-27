@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: zuulservice
+  profiles:
+    active:
+      default
+  cloud:
+    gcp:
+      config:
+        enabled: false
+    
+#default hystrix conf.
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2500
+
+# authentification properties
+authentification:
+  max:
+    attempt: 10 # try
+  recovery:
+    attempt: 5 # min
+    
