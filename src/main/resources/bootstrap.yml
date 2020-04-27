@@ -5,7 +5,6 @@ spring:
     active:
       default
   cloud:
-#    enable: true
     gcp:
       config:
         enabled: true
@@ -29,4 +28,15 @@ authentification:
     attempt: 10 # try
   recovery:
     attempt: 5 # min
-    
+
+---
+spring:
+  profiles: gcptest
+  cloud:
+    gcp:
+      config:
+        enabled: true
+        timeout-millis : 120000        
+        project-id: lof-ws-test
+        credentials:
+          location: ""
