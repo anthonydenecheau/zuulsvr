@@ -2,9 +2,26 @@
 server:
   port: 5555
   
-spring:
-  zipkin:
-    baseUrl:  http://localhost:9411
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+zuul:
+  ignored-services: "*"
+  prefix: /api
+  routes:
+    onlinedogshowservice: /ods/**
+    dogservice: /dog/**
+    judgeservice: /judge/**
+    showservice: /show/**
+    lofselectclubservice: /lofselectclub/**
+  debug:
+    request: true
 
 eureka:
   instance:
