@@ -7,7 +7,7 @@ while ! `nc -z eurekaserver  $EUREKASERVER_PORT`; do sleep 3; done
 echo "******* Eureka Server has started"
 
 echo "********************************************************"
-echo "Starting Zuul Service
+echo "Starting Zuul Service"
 echo "********************************************************"
 java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Deureka.client.serviceUrl.defaultZone=$EUREKASERVER_URI   \
