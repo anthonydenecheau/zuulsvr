@@ -19,33 +19,36 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 @EnableAutoConfiguration
 public class DocumentationController implements SwaggerResourcesProvider {
 
-	@Autowired
-	private ZuulProperties zuulProperties ;
+   @Autowired
+   private ZuulProperties zuulProperties;
 
-	@Override
-	public List<SwaggerResource> get() {
-		List<SwaggerResource> resources = new ArrayList<SwaggerResource>();
-		Map<String, ZuulRoute> routes= zuulProperties.getRoutes();
+   @Override
+   public List<SwaggerResource> get() {
+      List<SwaggerResource> resources = new ArrayList<SwaggerResource>();
+      Map<String, ZuulRoute> routes = zuulProperties.getRoutes();
 
-		routes.forEach((k,v)-> {;
-			ZuulProperties.ZuulRoute p = (ZuulProperties.ZuulRoute) v;
-			// TODO : automate version (via config.)
-			if (p.getServiceId().equals("dogservice")) {
-				resources.add(swaggerResource(p.getServiceId()+"-v1","/api/"+p.getId()+"/api-docs?group=dogservice-1.0","2.0"));
-				resources.add(swaggerResource(p.getServiceId()+"-v2","/api/"+p.getId()+"/api-docs?group=dogservice-2.0","2.0"));
-			} else
-				resources.add(swaggerResource(p.getServiceId()+"-v1","/api/"+p.getId()+"/api-docs","2.0"));
-		});
-		
-		return resources;
-	}
+      routes.forEach((k, v) -> {
+         ;
+         ZuulProperties.ZuulRoute p = (ZuulProperties.ZuulRoute) v;
+         // TODO : automate version (via config.)
+         if (p.getServiceId().equals("dogservice")) {
+            resources.add(swaggerResource(p.getServiceId() + "-v1",
+                  "/api/" + p.getId() + "/api-docs?group=dogservice-1.0", "2.0"));
+            resources.add(swaggerResource(p.getServiceId() + "-v2",
+                  "/api/" + p.getId() + "/api-docs?group=dogservice-2.0", "2.0"));
+         } else
+            resources.add(swaggerResource(p.getServiceId() + "-v1", "/api/" + p.getId() + "/api-docs", "2.0"));
+      });
 
-	private SwaggerResource swaggerResource(String name, String location, String version) {
-		SwaggerResource swaggerResource = new SwaggerResource();
-		swaggerResource.setName(name);
-		swaggerResource.setLocation(location);
-		swaggerResource.setSwaggerVersion(version);
-		return swaggerResource;
-	}
+      return resources;
+   }
+
+   private SwaggerResource swaggerResource(String name, String location, String version) {
+      SwaggerResource swaggerResource = new SwaggerResource();
+      swaggerResource.setName(name);
+      swaggerResource.setLocation(location);
+      swaggerResource.setSwaggerVersion(version);
+      return swaggerResource;
+   }
 
 }

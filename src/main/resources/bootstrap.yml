@@ -5,5 +5,28 @@ spring:
     active:
       default
   cloud:
-    config:
-      enabled: true
+#    enable: true
+    gcp:
+      config:
+        enabled: true
+        timeout-millis : 120000        
+        project-id: lof-ws-test
+        credentials:
+          location: file:${GOOGLE_APPLICATION_CREDENTIALS}      
+    
+#default hystrix conf.
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2500
+
+# authentification properties
+authentification:
+  max:
+    attempt: 10 # try
+  recovery:
+    attempt: 5 # min
+    

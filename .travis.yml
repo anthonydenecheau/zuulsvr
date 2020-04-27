@@ -2,6 +2,7 @@ language: java
 cache:
   directories:
   - "$HOME/.m2"
+dist: trusty
 jdk:
 - oraclejdk8
 sudo: required
@@ -14,18 +15,27 @@ notifications:
   - anthony.denecheau@gmail.com
   on_success: always
   on_failure: always
-branches:
-  only:
-  - master
 env:
   global:
   - secure: XcyGDm20R2uJoo8wW/mThCa6BFgHVyioAcLgXMnmckalUcRVqVEcsCzON8bhm69l994dP8ti66XYan/+5NKWT3/me0PBjMbj4dzuoZMRXUaDgdUPxUuqRMjXUvB1vC/gbkTKb2v+az9rNt3F3gyGedAf3dyQhYQXeSkdBm053fKXhmZg+y6OMHpIYMd7FueGbHazFta4pPmMlmACs9ya5RFAcqLxdhePjTKO6frLuqr/DhrFlr5vbd9pZZaKXZochKu3UJG5tzSxPs7b4YvRBTTmFhmFX6NhAwZXEQh6J7l538YHuF8dfVtOKHUef7dMd1OFZyThHEgCm7shidY8RWcAMtPdAwUJe/dTaBGbgmbNYPWUwEK462zFlSmoWczHDNs0R25cCdb31P0ZG619P0IjjSrcEN8dGg+wjcZWJTRlvDjUm6emsYrvPBvbWicOXv+4Cn20ws3gP1q4Gum+SEC7/ioKZjIE/0UtICaI2bSScRzNUucl2n8joRChCBZTaaa7DQwqCCHoJ4sbaudhjgFD/naJf9HjbfL2hrZauyJ3o6ly6Df9vZoA62Vv5NSaDTed92YaI0weU/jylzhcwtkYseKy/wYGafBcx4qRQKocbKBZumFmZgq1nggta0/Lyo0qpV4Wc6nvyG8+PlWa2J1trPHWQfwgDbOiKxYHwbo=
   - secure: Jp3xs+2tjcbVFqK5rL1SFrLc6f83sjDoOoVx+nTmDnLtlRA0erGhJ9arXXif0/6BpGfgqWkPy9RGHYG5J8fknolcYZnXJTZNGpm/PJFgkZIhTLniASJhbJE7O9OgV3tcdZ0J+IUX95MFNLtK2+5tW1KA245WbGCcQ/+vSNXTb5XdvGzMiS2K8UH0ZFr7C1KxPJykERKSJx1M2frLXUvrbu+dh1YHILHD2TIe9uz4hiuVsM0rO3k1QnRVxHwXuDgZhcRnvn3dm7bDs9Q/z/rxBuSmbqOV/s2dBVZUnK9JHHQpHkBTZFhFXqjZzwcLyV9AzdQRbHxbnB9CxPXIOEpVytmbWeCN4HAV2/M2EodRhDW4F/WIgMycoxq5S/DDytwFNwihPyJLlfC6bdYKDcPiFF9xrgwKhDTFP4Q5e8XZYeQDRqOOcPMVIThFq6oIoGPGMnPRDVMpLfcOyAPQ+ZG8DFMeex4MfrlunrScRUIyhhLGbFA5BqLSwi3nZL8B/irjxzf7fZcDWmJ6dgu/v6cQYa5i4C7wbrav3HOZbdWID7JAbu97GRRq8kgcH4JFrnpK1ZZMPOiou67bZzW07qAwc6ZTSweZO7RffwB/Mj0ZTdE7tfWWEBROjmRfDp751HgRYZLxEzC6dbj5ApdmzIIFsj1iA6wH5eiCYn3Gh2qKci0=
   - secure: CtV+4csBrWj3bR/cVUIWwT9cvOTM4V5/qnTwweQJeDSluJJxZ8aFwTVUZBPPeXNh8CugQxS2QBGEvqjDuOpArZvSrTxWEqHaAb2zpLm6Sk/xgxp/fJvlSjIePWj079mwmtVwrbQR8/9PH3ZNm3b8TzUTkWuruaPsPl36dADiyTF+UAOLWCXu0sOvKfdRv3qIWCA0ubh5QO1t40Vt4BNEp4uwd8+xHQKGGCNEJ5rq5TX1UL5obVgPQ0skCh7Y67QsCyIiAxpoqNle6Hml0TwEmuyoFcDflrMq4fXfW/o+PrHDrSBxS9fqfPDPlrR3Ownd+6T69hWP3/Va2D0hsYQ46Zd8qk15f/wxH9J5MS1ncL6Y0dceYoKgQEDGZ2ggT6qRNOisG/Pv3Z0gJZrV7RH5LQ1+c5QQ5iNzstv7spaoxhReIjo/w3EWdtEEpwUnPt8vQdvDJLE3HXYEMpaLpRchowym7Z/ZFceymA0CfgCLWhVUz7XidDWeDn/GeYmCmz4YlZ16OQdP5dw2XULI5mZe5MLgB3K2XHplVdBSswKKFCNmOS8VE/kdEnj0EFOgfcUdhZMc+Zyd53LGmzHqpfjew/v1Snpgg1dQexpMrbHzZ3T0hBmJSjZs01J0dVccXYwEx0MzeMJJzPwV5aE21sMHy6T1+J6XJQ0X0s606Ef/Ll8=
+
 before_install:
-- gem install travis -v 1.8.5 --no-rdoc --no-ri
+- ruby -v
+- gem install travis -v 1.8.9 --no-document
+- travis version
 - export BUILD_NAME=scc-zuulsvr-$TRAVIS_BRANCH-$(date -u "+%Y%m%d%H%M%S")-$TRAVIS_BUILD_NUMBER
-script:
-- sh scripts/travis/tag_build.sh
-- sh scripts/travis/build_services.sh
-- sh scripts/travis/deploy_to_docker_hub.sh
+
+jobs:
+  include:
+  - stage: build and publish to Docker Hub
+    env: GCP_ENV=re7
+    script:
+    - sh scripts/travis/tag_build.sh
+    - sh scripts/travis/build_services.sh
+    - sh scripts/travis/deploy_to_docker_hub.sh
+    - /bin/bash scripts/travis/deploy_to_gcp.sh
+stages:
+  - name: build and publish to Docker Hub
+    if: branch = master
