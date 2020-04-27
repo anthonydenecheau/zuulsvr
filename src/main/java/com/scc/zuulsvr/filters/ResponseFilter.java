@@ -11,16 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.cloud.sleuth.Tracer;
 
 @Component
 public class ResponseFilter extends ZuulFilter {
 	private static final int FILTER_ORDER = 1;
 	private static final boolean SHOULD_FILTER = true;
 	private static final Logger logger = LoggerFactory.getLogger(ResponseFilter.class);
-
-	@Autowired
-	Tracer tracer;
 
 	@Autowired
     LoginAttemptService loginAttemptService;
@@ -43,7 +39,7 @@ public class ResponseFilter extends ZuulFilter {
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
-		ctx.getResponse().addHeader("scc-correlation-id", tracer.getCurrentSpan().traceIdString());
+		ctx.getResponse().addHeader("scc-correlation-id", "[TODO]");
 		
 		// loginFailed ! 
 		final String ip = getClientIP(ctx.getRequest());
