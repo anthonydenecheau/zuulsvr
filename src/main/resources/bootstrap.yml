@@ -4,14 +4,6 @@ spring:
   profiles:
     active:
       default
-#  cloud:
-#    gcp:
-#      config:
-#        enabled: true
-#        timeout-millis : 120000        
-#        project-id: lof-ws-test
-#        credentials:
-#          location: file:${GOOGLE_APPLICATION_CREDENTIALS}      
     
 #default hystrix conf.
 hystrix:
@@ -34,11 +26,3 @@ example:
 ---
 spring:
   profiles: gcptest
-#  cloud:
-#    gcp:
-#      config:
-#        enabled: true
-#        timeout-millis : 120000        
-#        project-id: lof-ws-test
-#        credentials:
-#          location: ""
